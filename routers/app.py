@@ -70,7 +70,11 @@ async def process_music(files: List[UploadFile]):
                 content = await file_.read()
                 f.write(content)
 
-            img = Image.open(file_path)
+            try:
+                img = Image.open(file_path)
+            except Exception:
+                raise HTTPException(status_code=422, detail=f"One or more images are invalid")
+
             dpi = img.info.get("dpi", (72, 72))
             if dpi[0] < 290 or dpi[1] < 290:
                 raise HTTPException(status_code=400, detail=f"Image resolution too low. Detected DPI: {int(max(dpi))}")
@@ -83,8 +87,13 @@ async def process_music(files: List[UploadFile]):
         print("Images successfully converted to MusicXML")
 
         # Combine into one file
-        combined_score = stream.Score()
         mxl_files = glob.glob(os.path.join(temp_dir, "**", "*.mxl"), recursive=True)
+        print(mxl_files)
+
+        if len(mxl_files) < len(files):
+            raise HTTPException(status_code=422, detail=f"One or more images are invalid")
+
+        combined_score = stream.Score()
         for mxl_file in mxl_files:
             print(f"Processing file: {mxl_file}")
             try:
