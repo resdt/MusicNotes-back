@@ -121,8 +121,7 @@ async def process_music(files: List[UploadFile]):
 
         # Step 3: Convert MIDI to WAV using FluidSynth
         wav_path = f"{temp_dir}/output.wav"
-        soundfont_path = "soundfont.sf2"  # Path to your SoundFont file
-        subprocess.run(["fluidsynth", "-ni", soundfont_path, midi_path, "-F", wav_path], check=True)
+        subprocess.run(["fluidsynth", "-ni", midi_path, "-F", wav_path], check=True)
         print("MIDI file successfully converted to SoundFont")
 
         # Step 4: Return WAV as a streaming response
