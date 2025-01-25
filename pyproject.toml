@@ -1,20 +1,13 @@
-[tool.poetry]
-name = "musicnotes-backend"
+[project]
+name = "backend"
 version = "0.1.0"
-description = ""
-authors = ["Your Name <you@example.com>"]
+description = "Add your description here"
 readme = "README.md"
-package-mode = false
-
-[tool.poetry.dependencies]
-python = "^3.12"
-fastapi = "^0.115.6"
-asyncpg = "^0.30.0"
-uvicorn = "^0.34.0"
-music21 = "^9.3.0"
-python-multipart = "^0.0.20"
-
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires-python = "==3.12.*"
+dependencies = [
+    "asyncpg>=0.30.0",
+    "fastapi>=0.115.7",
+    "music21>=9.3.0",
+    "python-multipart>=0.0.20",
+    "uvicorn>=0.34.0",
+]

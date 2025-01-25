@@ -6,7 +6,7 @@ FROM toprock/audiveris:stable AS audiveris-stage
 # ------------------------------------------------------------------------
 # 2. Final image: python:3.12-slim
 # ------------------------------------------------------------------------
-FROM python:3.12-slim
+FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
 
 # Install OS dependencies required at runtime (Java, fluidsynth, etc.)
 RUN apt-get update && apt-get install -y \
@@ -33,10 +33,10 @@ WORKDIR /app/backend
 COPY . /app/backend
 
 # Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN uv sync --frozen
 
 # Expose the port your FastAPI (or other) app will run on
 EXPOSE 8080
 
 # Start your application
-CMD ["uvicorn", "main:api", "--host", "0.0.0.0", "--port", "8080", "--reload"]
+CMD ["uv", "run", "uvicorn", "main:api", "--host", "0.0.0.0", "--port", "8080", "--reload"]
